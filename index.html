@@ -496,74 +496,154 @@ a { color: inherit; text-decoration: none; }
   transform: translateX(8px);
 }
 
-/* ============ 联系 ============ */
-.contact-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+/* ============ 联系终端 ============ */
+.contact-card { display: flex; flex-direction: column; gap: 0; }
+
+/* 终端窗口外壳 */
+.terminal-window {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(0,0,0,0.25);
 }
-.contact-form {
+.terminal-titlebar {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border-light);
 }
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
+.terminal-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.form-label {
+.terminal-dot.r { background: #ff5f57; }
+.terminal-dot.y { background: #febc2e; }
+.terminal-dot.g { background: #28c840; }
+.terminal-title {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  margin-left: auto;
+  margin-right: auto;
+  user-select: none;
 }
-.form-input, .form-textarea {
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--text-primary);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 10px 12px;
-  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
-  outline: none;
-  width: 100%;
-}
-.form-input:focus, .form-textarea:focus {
-  border-color: var(--accent);
-  background: var(--bg);
-}
-.form-textarea { resize: vertical; min-height: 80px; }
-.form-submit {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: all var(--dur) var(--ease);
+.terminal-body { padding: 4px 0; }
+
+/* 终端行 */
+.terminal-line {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: var(--space-sm);
+  padding: 9px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  transition: all var(--dur) var(--ease);
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
 }
-.form-submit:hover {
+a.terminal-line { text-decoration: none; color: inherit; }
+.terminal-line::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform var(--dur) var(--ease);
+}
+.terminal-line:hover {
+  background: var(--accent-soft);
+}
+.terminal-line:hover::before { transform: scaleY(1); }
+.terminal-prompt {
+  color: var(--accent-dim);
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.terminal-cmd {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  min-width: 52px;
+}
+.terminal-arrow {
+  color: var(--text-quaternary);
+  flex-shrink: 0;
+  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.terminal-line:hover .terminal-arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+.terminal-result {
+  color: var(--text-primary);
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.terminal-line:hover .terminal-result { color: var(--accent-dim); }
+.terminal-action {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--dur) var(--ease);
+}
+.terminal-line:hover .terminal-action {
   border-color: var(--accent);
   color: var(--accent-dim);
 }
-.form-submit svg {
-  width: 12px; height: 12px;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  fill: none;
-  transition: transform var(--dur) var(--ease);
+.terminal-copied {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent-soft);
 }
-.form-submit:hover svg { transform: translateX(3px); }
+
+/* 启动行 */
+.terminal-boot {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  padding: 8px 14px 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.terminal-boot .boot-ok { color: var(--accent); }
+
+/* 光标行 */
+.terminal-cursor-line {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 4px 14px 10px;
+  color: var(--accent-dim);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.terminal-cursor-line .prompt { font-weight: 600; }
+.terminal-cursor {
+  display: inline-block;
+  width: 8px; height: 15px;
+  background: var(--accent);
+  animation: cursor-blink 1.1s steps(2) infinite;
+  vertical-align: middle;
+}
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
 
 /* ============ 页脚 ============ */
 .footer {
@@ -702,9 +782,13 @@ a { color: inherit; text-decoration: none; }
           <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           <span>github.com/kali-artist</span>
         </a>
-        <a class="hero-link" href="mailto:kali@superkali.online">
+        <a class="hero-link" href="mailto:shenshucun2023@163.com">
           <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>kali@superkali.online</span>
+          <span>shenshucun2023@163.com</span>
+        </a>
+        <a class="hero-link" href="https://www.feishu.cn/invitation/page/add_contact/?token=755ue836-4e1d-4ea0-8f10-aa50a573b1cb&unique_id=Y6LA-LmAc_T1y8aznDq6KA==" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>飞书联系</span>
         </a>
       </div>
     </div>
@@ -956,24 +1040,52 @@ a { color: inherit; text-decoration: none; }
         <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         联系我
       </div>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label class="form-label" for="name">姓名</label>
-          <input class="form-input" type="text" id="name" name="name" placeholder="你的名字" required>
+      <div class="terminal-window">
+        <div class="terminal-titlebar">
+          <span class="terminal-dot r"></span>
+          <span class="terminal-dot y"></span>
+          <span class="terminal-dot g"></span>
+          <span class="terminal-title">kali@portfolio — ~/contact</span>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="email">邮箱</label>
-          <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required>
+        <div class="terminal-body">
+          <div class="terminal-boot">
+            <span class="boot-ok">✓</span>
+            <span>系统就绪 — 可用命令：</span>
+          </div>
+          <a class="terminal-line" href="mailto:shenshucun2023@163.com">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-cmd">mail</span>
+            <span class="terminal-arrow">→</span>
+            <span class="terminal-result">shenshucun2023@163.com</span>
+            <span class="terminal-action">发送</span>
+          </a>
+          <div class="terminal-line" onclick="copyText('Ssc_captain', this)">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-cmd">wechat</span>
+            <span class="terminal-arrow">→</span>
+            <span class="terminal-result">Ssc_captain</span>
+            <span class="terminal-action">复制</span>
+          </div>
+          <a class="terminal-line" href="https://www.feishu.cn/invitation/page/add_contact/?token=755ue836-4e1d-4ea0-8f10-aa50a573b1cb&unique_id=Y6LA-LmAc_T1y8aznDq6KA==" target="_blank">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-cmd">feishu</span>
+            <span class="terminal-arrow">→</span>
+            <span class="terminal-result">添加飞书好友</span>
+            <span class="terminal-action">打开</span>
+          </a>
+          <a class="terminal-line" href="https://github.com/kali-artist" target="_blank">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-cmd">github</span>
+            <span class="terminal-arrow">→</span>
+            <span class="terminal-result">github.com/kali-artist</span>
+            <span class="terminal-action">访问</span>
+          </a>
+          <div class="terminal-cursor-line">
+            <span class="prompt">$</span>
+            <span class="terminal-cursor"></span>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="message">留言</label>
-          <textarea class="form-textarea" id="message" name="message" placeholder="想聊点什么..." required></textarea>
-        </div>
-        <button class="form-submit" type="submit">
-          <span>发送消息</span>
-          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
-        </button>
-      </form>
+      </div>
     </div>
 
   </div>
@@ -984,21 +1096,29 @@ a { color: inherit; text-decoration: none; }
   <div>© 2026 卡力 — 精准构建</div>
   <div class="footer-links">
     <a href="https://github.com/kali-artist" target="_blank">GitHub</a>
-    <a href="mailto:kali@superkali.online">邮箱</a>
+    <a href="mailto:shenshucun2023@163.com">邮箱</a>
     <a href="#top">回到顶部</a>
   </div>
 </footer>
 
 <script>
-// 联系表单
-function handleSubmit(e) {
-  e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const message = document.getElementById('message').value;
-  const subject = encodeURIComponent(`[简历联系] ${name}`);
-  const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-  window.location.href = `mailto:kali@superkali.online?subject=${subject}&body=${body}`;
+// 复制文本到剪贴板
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    const badge = el.querySelector('.terminal-action');
+    const orig = badge.textContent;
+    badge.textContent = '✓ 已复制';
+    badge.classList.add('terminal-copied');
+    setTimeout(() => {
+      badge.textContent = orig;
+      badge.classList.remove('terminal-copied');
+    }, 2000);
+  }).catch(() => {
+    const badge = el.querySelector('.terminal-action');
+    const orig = badge.textContent;
+    badge.textContent = '复制失败';
+    setTimeout(() => { badge.textContent = orig; }, 2000);
+  });
 }
 
 // 滚动触发动画
