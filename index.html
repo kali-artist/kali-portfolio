@@ -808,12 +808,214 @@ a.terminal-line { text-decoration: none; color: inherit; }
   .footer { flex-direction: column; gap: var(--space-md); text-align: center; }
   .experience-entry { padding: var(--space-xl); }
 }
+
+/* ============ 流光渐变 Mesh ============ */
+.aurora-mesh {
+  position: fixed;
+  inset: -30%;
+  z-index: -2;
+  background: conic-gradient(from 0deg at 50% 50%,
+    rgba(0, 230, 118, 0.15),
+    rgba(0, 184, 212, 0.12),
+    rgba(124, 92, 255, 0.10),
+    rgba(255, 105, 180, 0.08),
+    rgba(255, 183, 77, 0.07),
+    rgba(0, 200, 160, 0.12),
+    rgba(100, 255, 218, 0.10),
+    rgba(0, 230, 118, 0.15));
+  animation: mesh-rotate 60s linear infinite;
+  filter: blur(60px);
+  opacity: 0.5;
+  will-change: transform;
+}
+@keyframes mesh-rotate {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.08); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+/* ============ 浮动像素粒子 ============ */
+.pixel-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.pp {
+  position: absolute;
+  left: var(--left, 50%);
+  bottom: -40px;
+  width: var(--size, 20px);
+  height: var(--size, 20px);
+  opacity: 0;
+  animation: pp-float var(--dur, 25s) linear var(--delay, 0s) infinite;
+  filter: drop-shadow(0 0 3px rgba(0,230,118,0.12));
+  will-change: transform, opacity;
+}
+.pp svg {
+  width: 100%;
+  height: 100%;
+}
+@keyframes pp-float {
+  0% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); opacity: 0; }
+  8% { opacity: var(--op, 0.2); }
+  25% { transform: translateY(-25vh) translateX(var(--drift, 20px)) rotate(90deg) scale(1.1); }
+  50% { transform: translateY(-55vh) translateX(calc(var(--drift, 20px) * -0.5)) rotate(180deg) scale(0.9); }
+  75% { transform: translateY(-80vh) translateX(var(--drift, 20px)) rotate(270deg) scale(1.05); }
+  92% { opacity: var(--op, 0.2); }
+  100% { transform: translateY(-110vh) translateX(calc(var(--drift, 20px) * -1)) rotate(360deg) scale(1); opacity: 0; }
+}
+
+/* ============ 卡片标题特效 ============ */
+.card-label { position: relative; }
+
+/* 1. 系统状态 — 柔光脉冲 */
+.title-glow {
+  animation: title-glow-pulse 3s ease-in-out infinite;
+}
+@keyframes title-glow-pulse {
+  0%, 100% { text-shadow: 0 0 6px rgba(0, 230, 118, 0.15); }
+  50% { text-shadow: 0 0 14px rgba(0, 230, 118, 0.4); }
+}
+
+/* 2. 在线产品 — 渐变流光文字 */
+.title-gradient {
+  background: linear-gradient(90deg, #00E676, #00BCD4, #4FC3F7, #00E676);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: title-gradient-flow 5s linear infinite;
+}
+@keyframes title-gradient-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* 3. AI 开发能力 — 光泽扫过 */
+.title-shimmer { overflow: hidden; }
+.title-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 80%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 230, 118, 0.35), transparent);
+  animation: title-shimmer-sweep 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes title-shimmer-sweep {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
+}
+
+/* 4. RPA & 自动化 — 下划线绘制 */
+.title-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dim));
+  border-radius: 1px;
+  animation: title-underline-draw 3s ease-in-out infinite;
+}
+@keyframes title-underline-draw {
+  0%, 100% { width: 0; opacity: 0.3; }
+  50% { width: 100%; opacity: 1; }
+}
+
+/* 5. 知识库 & 飞书生态 — 色彩循环 */
+.title-rainbow {
+  animation: title-rainbow-cycle 8s linear infinite;
+}
+@keyframes title-rainbow-cycle {
+  0%, 100% { color: var(--text-tertiary); }
+  25% { color: #00E676; }
+  50% { color: #00BCD4; }
+  75% { color: #7C5CFF; }
+}
+
+/* 6. 基础设施 & DevOps — 霓虹闪烁 */
+.title-neon {
+  animation: title-neon-flicker 4s ease-in-out infinite;
+}
+@keyframes title-neon-flicker {
+  0%, 100% { text-shadow: 0 0 4px rgba(0, 230, 118, 0.15); }
+  45%, 55% { text-shadow: 0 0 10px rgba(0, 230, 118, 0.5), 0 0 20px rgba(0, 230, 118, 0.2); }
+  50% { text-shadow: 0 0 2px rgba(0, 230, 118, 0.08); }
+}
+
+/* 7. 工作经历 — 打字机光标 */
+.title-typewriter::after {
+  content: '_';
+  color: var(--accent);
+  animation: title-cursor-blink 1s step-end infinite;
+  margin-left: 2px;
+  font-weight: 400;
+}
+@keyframes title-cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 8. 技术栈总览 — 波浪渐变 */
+.title-wave {
+  background: linear-gradient(90deg, #00E676, #4FC3F7, #7C5CFF, #FF8AB0, #00E676);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: title-wave-flow 6s ease-in-out infinite;
+}
+@keyframes title-wave-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 9. 联系我 — 终端呼吸 */
+.title-blink {
+  animation: title-blink-glow 2.5s ease-in-out infinite;
+}
+@keyframes title-blink-glow {
+  0%, 100% { color: var(--text-tertiary); text-shadow: none; }
+  50% { color: var(--accent-dim); text-shadow: 0 0 10px rgba(0, 230, 118, 0.4); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-mesh { animation: none; }
+  .pp { animation: none; opacity: 0; }
+  .title-glow, .title-gradient, .title-shimmer, .title-underline,
+  .title-rainbow, .title-neon, .title-typewriter, .title-wave, .title-blink {
+    animation: none !important;
+  }
+  .title-shimmer::after, .title-underline::after, .title-typewriter::after { display: none; }
+  .title-gradient, .title-wave { -webkit-text-fill-color: initial; background: none; }
+}
+
 </style>
 </head>
 <body>
 
+<div class="aurora-mesh"></div>
 <div class="aurora"><div class="aurora-blob"></div><div class="aurora-blob"></div><div class="aurora-blob"></div><div class="aurora-blob"></div></div>
 <div class="bg-grid"></div>
+<div class="pixel-particles" aria-hidden="true">
+  <div class="pp" style="--left:5%;--size:22px;--dur:28s;--delay:0s;--drift:30px;--op:0.2"><svg viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="2" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="3" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="6" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="7" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="1" y="1" width="1" height="1" fill="#2a2a2a"/><rect x="8" y="1" width="1" height="1" fill="#2a2a2a"/><rect x="0" y="2" width="1" height="1" fill="#2a2a2a"/><rect x="2" y="2" width="1" height="1" fill="#00E676"/><rect x="7" y="2" width="1" height="1" fill="#00E676"/><rect x="9" y="2" width="1" height="1" fill="#2a2a2a"/><rect x="0" y="3" width="1" height="1" fill="#2a2a2a"/><rect x="9" y="3" width="1" height="1" fill="#2a2a2a"/><rect x="0" y="4" width="1" height="1" fill="#2a2a2a"/><rect x="4" y="4" width="1" height="1" fill="#FF6B9D"/><rect x="5" y="4" width="1" height="1" fill="#FF6B9D"/><rect x="9" y="4" width="1" height="1" fill="#2a2a2a"/><rect x="1" y="5" width="1" height="1" fill="#2a2a2a"/><rect x="8" y="5" width="1" height="1" fill="#2a2a2a"/><rect x="2" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="3" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="4" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="5" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="6" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="7" y="6" width="1" height="1" fill="#2a2a2a"/></svg></div>
+  <div class="pp" style="--left:12%;--size:18px;--dur:22s;--delay:5s;--drift:-20px;--op:0.18"><svg viewBox="0 0 8 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="0" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="7" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="0" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="7" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="0" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="7" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="6" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="6" width="1" height="1" fill="#FF5C8A"/></svg></div>
+  <div class="pp" style="--left:22%;--size:16px;--dur:25s;--delay:10s;--drift:25px;--op:0.22"><svg viewBox="0 0 9 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="4" y="0" width="1" height="1" fill="#FFD54F"/><rect x="4" y="1" width="1" height="1" fill="#FFD54F"/><rect x="0" y="2" width="1" height="1" fill="#FFD54F"/><rect x="1" y="2" width="1" height="1" fill="#FFD54F"/><rect x="2" y="2" width="1" height="1" fill="#FFD54F"/><rect x="3" y="2" width="1" height="1" fill="#FFD54F"/><rect x="4" y="2" width="1" height="1" fill="#FFD54F"/><rect x="5" y="2" width="1" height="1" fill="#FFD54F"/><rect x="6" y="2" width="1" height="1" fill="#FFD54F"/><rect x="7" y="2" width="1" height="1" fill="#FFD54F"/><rect x="8" y="2" width="1" height="1" fill="#FFD54F"/><rect x="1" y="3" width="1" height="1" fill="#FFD54F"/><rect x="2" y="3" width="1" height="1" fill="#FFD54F"/><rect x="3" y="3" width="1" height="1" fill="#FFD54F"/><rect x="4" y="3" width="1" height="1" fill="#FFD54F"/><rect x="5" y="3" width="1" height="1" fill="#FFD54F"/><rect x="6" y="3" width="1" height="1" fill="#FFD54F"/><rect x="7" y="3" width="1" height="1" fill="#FFD54F"/><rect x="2" y="4" width="1" height="1" fill="#FFD54F"/><rect x="3" y="4" width="1" height="1" fill="#FFD54F"/><rect x="4" y="4" width="1" height="1" fill="#FFD54F"/><rect x="5" y="4" width="1" height="1" fill="#FFD54F"/><rect x="6" y="4" width="1" height="1" fill="#FFD54F"/><rect x="3" y="5" width="1" height="1" fill="#FFD54F"/><rect x="4" y="5" width="1" height="1" fill="#FFD54F"/><rect x="5" y="5" width="1" height="1" fill="#FFD54F"/><rect x="2" y="6" width="1" height="1" fill="#FFD54F"/><rect x="4" y="6" width="1" height="1" fill="#FFD54F"/><rect x="6" y="6" width="1" height="1" fill="#FFD54F"/></svg></div>
+  <div class="pp" style="--left:35%;--size:24px;--dur:30s;--delay:3s;--drift:-15px;--op:0.18"><svg viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#9E9E9E"/><rect x="8" y="0" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="1" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="8" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="9" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="2" width="1" height="1" fill="#9E9E9E"/><rect x="9" y="2" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="3" width="1" height="1" fill="#9E9E9E"/><rect x="2" y="3" width="1" height="1" fill="#000"/><rect x="7" y="3" width="1" height="1" fill="#000"/><rect x="9" y="3" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="4" width="1" height="1" fill="#9E9E9E"/><rect x="9" y="4" width="1" height="1" fill="#9E9E9E"/><rect x="1" y="5" width="1" height="1" fill="#9E9E9E"/><rect x="4" y="5" width="1" height="1" fill="#FFAB91"/><rect x="5" y="5" width="1" height="1" fill="#FFAB91"/><rect x="8" y="5" width="1" height="1" fill="#9E9E9E"/><rect x="2" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="3" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="4" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="5" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="6" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="7" y="6" width="1" height="1" fill="#9E9E9E"/></svg></div>
+  <div class="pp" style="--left:48%;--size:20px;--dur:20s;--delay:8s;--drift:35px;--op:0.2"><svg viewBox="0 0 8 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="0" width="1" height="1" fill="#FF8AB0"/><rect x="0" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="7" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="0" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="7" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="6" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="6" width="1" height="1" fill="#FF8AB0"/></svg></div>
+  <div class="pp" style="--left:58%;--size:18px;--dur:27s;--delay:15s;--drift:-25px;--op:0.18"><svg viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="2" y="0" width="1" height="1" fill="#8D6E63"/><rect x="7" y="0" width="1" height="1" fill="#8D6E63"/><rect x="1" y="1" width="1" height="1" fill="#8D6E63"/><rect x="2" y="1" width="1" height="1" fill="#8D6E63"/><rect x="3" y="1" width="1" height="1" fill="#8D6E63"/><rect x="6" y="1" width="1" height="1" fill="#8D6E63"/><rect x="7" y="1" width="1" height="1" fill="#8D6E63"/><rect x="8" y="1" width="1" height="1" fill="#8D6E63"/><rect x="2" y="2" width="1" height="1" fill="#8D6E63"/><rect x="7" y="2" width="1" height="1" fill="#8D6E63"/><rect x="0" y="3" width="1" height="1" fill="#8D6E63"/><rect x="1" y="3" width="1" height="1" fill="#8D6E63"/><rect x="2" y="3" width="1" height="1" fill="#8D6E63"/><rect x="3" y="3" width="1" height="1" fill="#8D6E63"/><rect x="4" y="3" width="1" height="1" fill="#8D6E63"/><rect x="5" y="3" width="1" height="1" fill="#8D6E63"/><rect x="6" y="3" width="1" height="1" fill="#8D6E63"/><rect x="7" y="3" width="1" height="1" fill="#8D6E63"/><rect x="8" y="3" width="1" height="1" fill="#8D6E63"/><rect x="9" y="3" width="1" height="1" fill="#8D6E63"/><rect x="1" y="4" width="1" height="1" fill="#8D6E63"/><rect x="2" y="4" width="1" height="1" fill="#8D6E63"/><rect x="3" y="4" width="1" height="1" fill="#8D6E63"/><rect x="4" y="4" width="1" height="1" fill="#8D6E63"/><rect x="5" y="4" width="1" height="1" fill="#8D6E63"/><rect x="6" y="4" width="1" height="1" fill="#8D6E63"/><rect x="7" y="4" width="1" height="1" fill="#8D6E63"/><rect x="8" y="4" width="1" height="1" fill="#8D6E63"/><rect x="2" y="5" width="1" height="1" fill="#8D6E63"/><rect x="3" y="5" width="1" height="1" fill="#8D6E63"/><rect x="4" y="5" width="1" height="1" fill="#8D6E63"/><rect x="5" y="5" width="1" height="1" fill="#8D6E63"/><rect x="6" y="5" width="1" height="1" fill="#8D6E63"/><rect x="7" y="5" width="1" height="1" fill="#8D6E63"/><rect x="3" y="6" width="1" height="1" fill="#8D6E63"/><rect x="4" y="6" width="1" height="1" fill="#8D6E63"/><rect x="5" y="6" width="1" height="1" fill="#8D6E63"/><rect x="6" y="6" width="1" height="1" fill="#8D6E63"/></svg></div>
+  <div class="pp" style="--left:70%;--size:22px;--dur:24s;--delay:2s;--drift:20px;--op:0.2"><svg viewBox="0 0 9 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="4" y="0" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="0" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="0" width="1" height="1" fill="#4FC3F7"/><rect x="3" y="1" width="1" height="1" fill="#4FC3F7"/><rect x="4" y="1" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="1" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="1" width="1" height="1" fill="#4FC3F7"/><rect x="7" y="1" width="1" height="1" fill="#4FC3F7"/><rect x="2" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="3" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="4" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="7" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="8" y="2" width="1" height="1" fill="#4FC3F7"/><rect x="1" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="2" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="3" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="4" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="7" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="8" y="3" width="1" height="1" fill="#4FC3F7"/><rect x="2" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="3" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="4" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="7" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="8" y="4" width="1" height="1" fill="#4FC3F7"/><rect x="3" y="5" width="1" height="1" fill="#4FC3F7"/><rect x="4" y="5" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="5" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="5" width="1" height="1" fill="#4FC3F7"/><rect x="7" y="5" width="1" height="1" fill="#4FC3F7"/><rect x="4" y="6" width="1" height="1" fill="#4FC3F7"/><rect x="5" y="6" width="1" height="1" fill="#4FC3F7"/><rect x="6" y="6" width="1" height="1" fill="#4FC3F7"/></svg></div>
+  <div class="pp" style="--left:82%;--size:20px;--dur:26s;--delay:12s;--drift:-30px;--op:0.2"><svg viewBox="0 0 9 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="4" y="0" width="1" height="1" fill="#66BB6A"/><rect x="3" y="1" width="1" height="1" fill="#66BB6A"/><rect x="4" y="1" width="1" height="1" fill="#66BB6A"/><rect x="5" y="1" width="1" height="1" fill="#66BB6A"/><rect x="2" y="2" width="1" height="1" fill="#66BB6A"/><rect x="3" y="2" width="1" height="1" fill="#66BB6A"/><rect x="4" y="2" width="1" height="1" fill="#66BB6A"/><rect x="5" y="2" width="1" height="1" fill="#66BB6A"/><rect x="6" y="2" width="1" height="1" fill="#66BB6A"/><rect x="1" y="3" width="1" height="1" fill="#66BB6A"/><rect x="2" y="3" width="1" height="1" fill="#66BB6A"/><rect x="3" y="3" width="1" height="1" fill="#66BB6A"/><rect x="4" y="3" width="1" height="1" fill="#66BB6A"/><rect x="5" y="3" width="1" height="1" fill="#66BB6A"/><rect x="6" y="3" width="1" height="1" fill="#66BB6A"/><rect x="7" y="3" width="1" height="1" fill="#66BB6A"/><rect x="2" y="4" width="1" height="1" fill="#66BB6A"/><rect x="3" y="4" width="1" height="1" fill="#66BB6A"/><rect x="4" y="4" width="1" height="1" fill="#66BB6A"/><rect x="5" y="4" width="1" height="1" fill="#66BB6A"/><rect x="6" y="4" width="1" height="1" fill="#66BB6A"/><rect x="3" y="5" width="1" height="1" fill="#66BB6A"/><rect x="4" y="5" width="1" height="1" fill="#66BB6A"/><rect x="5" y="5" width="1" height="1" fill="#66BB6A"/><rect x="4" y="6" width="1" height="1" fill="#66BB6A"/></svg></div>
+  <div class="pp" style="--left:90%;--size:16px;--dur:32s;--delay:7s;--drift:15px;--op:0.15"><svg viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="2" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="3" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="6" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="7" y="0" width="1" height="1" fill="#2a2a2a"/><rect x="1" y="1" width="1" height="1" fill="#2a2a2a"/><rect x="8" y="1" width="1" height="1" fill="#2a2a2a"/><rect x="0" y="2" width="1" height="1" fill="#2a2a2a"/><rect x="2" y="2" width="1" height="1" fill="#00E676"/><rect x="7" y="2" width="1" height="1" fill="#00E676"/><rect x="9" y="2" width="1" height="1" fill="#2a2a2a"/><rect x="0" y="3" width="1" height="1" fill="#2a2a2a"/><rect x="9" y="3" width="1" height="1" fill="#2a2a2a"/><rect x="0" y="4" width="1" height="1" fill="#2a2a2a"/><rect x="4" y="4" width="1" height="1" fill="#FF6B9D"/><rect x="5" y="4" width="1" height="1" fill="#FF6B9D"/><rect x="9" y="4" width="1" height="1" fill="#2a2a2a"/><rect x="1" y="5" width="1" height="1" fill="#2a2a2a"/><rect x="8" y="5" width="1" height="1" fill="#2a2a2a"/><rect x="2" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="3" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="4" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="5" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="6" y="6" width="1" height="1" fill="#2a2a2a"/><rect x="7" y="6" width="1" height="1" fill="#2a2a2a"/></svg></div>
+  <div class="pp" style="--left:42%;--size:14px;--dur:18s;--delay:18s;--drift:10px;--op:0.15"><svg viewBox="0 0 8 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="0" width="1" height="1" fill="#FF5C8A"/><rect x="0" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="7" y="1" width="1" height="1" fill="#FF5C8A"/><rect x="0" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="7" y="2" width="1" height="1" fill="#FF5C8A"/><rect x="0" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="7" y="3" width="1" height="1" fill="#FF5C8A"/><rect x="1" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="6" y="4" width="1" height="1" fill="#FF5C8A"/><rect x="2" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="5" y="5" width="1" height="1" fill="#FF5C8A"/><rect x="3" y="6" width="1" height="1" fill="#FF5C8A"/><rect x="4" y="6" width="1" height="1" fill="#FF5C8A"/></svg></div>
+  <div class="pp" style="--left:65%;--size:14px;--dur:21s;--delay:14s;--drift:-20px;--op:0.16"><svg viewBox="0 0 9 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="4" y="0" width="1" height="1" fill="#FFD54F"/><rect x="4" y="1" width="1" height="1" fill="#FFD54F"/><rect x="0" y="2" width="1" height="1" fill="#FFD54F"/><rect x="1" y="2" width="1" height="1" fill="#FFD54F"/><rect x="2" y="2" width="1" height="1" fill="#FFD54F"/><rect x="3" y="2" width="1" height="1" fill="#FFD54F"/><rect x="4" y="2" width="1" height="1" fill="#FFD54F"/><rect x="5" y="2" width="1" height="1" fill="#FFD54F"/><rect x="6" y="2" width="1" height="1" fill="#FFD54F"/><rect x="7" y="2" width="1" height="1" fill="#FFD54F"/><rect x="8" y="2" width="1" height="1" fill="#FFD54F"/><rect x="1" y="3" width="1" height="1" fill="#FFD54F"/><rect x="2" y="3" width="1" height="1" fill="#FFD54F"/><rect x="3" y="3" width="1" height="1" fill="#FFD54F"/><rect x="4" y="3" width="1" height="1" fill="#FFD54F"/><rect x="5" y="3" width="1" height="1" fill="#FFD54F"/><rect x="6" y="3" width="1" height="1" fill="#FFD54F"/><rect x="7" y="3" width="1" height="1" fill="#FFD54F"/><rect x="2" y="4" width="1" height="1" fill="#FFD54F"/><rect x="3" y="4" width="1" height="1" fill="#FFD54F"/><rect x="4" y="4" width="1" height="1" fill="#FFD54F"/><rect x="5" y="4" width="1" height="1" fill="#FFD54F"/><rect x="6" y="4" width="1" height="1" fill="#FFD54F"/><rect x="3" y="5" width="1" height="1" fill="#FFD54F"/><rect x="4" y="5" width="1" height="1" fill="#FFD54F"/><rect x="5" y="5" width="1" height="1" fill="#FFD54F"/><rect x="2" y="6" width="1" height="1" fill="#FFD54F"/><rect x="4" y="6" width="1" height="1" fill="#FFD54F"/><rect x="6" y="6" width="1" height="1" fill="#FFD54F"/></svg></div>
+  <div class="pp" style="--left:28%;--size:16px;--dur:29s;--delay:20s;--drift:25px;--op:0.16"><svg viewBox="0 0 8 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="0" width="1" height="1" fill="#FF8AB0"/><rect x="0" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="7" y="1" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="2" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="3" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="4" width="1" height="1" fill="#FF8AB0"/><rect x="0" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="2" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="3" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="4" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="5" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="7" y="5" width="1" height="1" fill="#FF8AB0"/><rect x="1" y="6" width="1" height="1" fill="#FF8AB0"/><rect x="6" y="6" width="1" height="1" fill="#FF8AB0"/></svg></div>
+  <div class="pp" style="--left:75%;--size:16px;--dur:33s;--delay:16s;--drift:18px;--op:0.14"><svg viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="1" y="0" width="1" height="1" fill="#9E9E9E"/><rect x="8" y="0" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="1" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="8" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="9" y="1" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="2" width="1" height="1" fill="#9E9E9E"/><rect x="9" y="2" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="3" width="1" height="1" fill="#9E9E9E"/><rect x="2" y="3" width="1" height="1" fill="#000"/><rect x="7" y="3" width="1" height="1" fill="#000"/><rect x="9" y="3" width="1" height="1" fill="#9E9E9E"/><rect x="0" y="4" width="1" height="1" fill="#9E9E9E"/><rect x="9" y="4" width="1" height="1" fill="#9E9E9E"/><rect x="1" y="5" width="1" height="1" fill="#9E9E9E"/><rect x="4" y="5" width="1" height="1" fill="#FFAB91"/><rect x="5" y="5" width="1" height="1" fill="#FFAB91"/><rect x="8" y="5" width="1" height="1" fill="#9E9E9E"/><rect x="2" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="3" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="4" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="5" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="6" y="6" width="1" height="1" fill="#9E9E9E"/><rect x="7" y="6" width="1" height="1" fill="#9E9E9E"/></svg></div>
+  <div class="pp" style="--left:15%;--size:14px;--dur:23s;--delay:22s;--drift:-22px;--op:0.15"><svg viewBox="0 0 10 7" preserveAspectRatio="xMidYMid meet" shape-rendering="crispEdges"><rect x="2" y="0" width="1" height="1" fill="#8D6E63"/><rect x="7" y="0" width="1" height="1" fill="#8D6E63"/><rect x="1" y="1" width="1" height="1" fill="#8D6E63"/><rect x="2" y="1" width="1" height="1" fill="#8D6E63"/><rect x="3" y="1" width="1" height="1" fill="#8D6E63"/><rect x="6" y="1" width="1" height="1" fill="#8D6E63"/><rect x="7" y="1" width="1" height="1" fill="#8D6E63"/><rect x="8" y="1" width="1" height="1" fill="#8D6E63"/><rect x="2" y="2" width="1" height="1" fill="#8D6E63"/><rect x="7" y="2" width="1" height="1" fill="#8D6E63"/><rect x="0" y="3" width="1" height="1" fill="#8D6E63"/><rect x="1" y="3" width="1" height="1" fill="#8D6E63"/><rect x="2" y="3" width="1" height="1" fill="#8D6E63"/><rect x="3" y="3" width="1" height="1" fill="#8D6E63"/><rect x="4" y="3" width="1" height="1" fill="#8D6E63"/><rect x="5" y="3" width="1" height="1" fill="#8D6E63"/><rect x="6" y="3" width="1" height="1" fill="#8D6E63"/><rect x="7" y="3" width="1" height="1" fill="#8D6E63"/><rect x="8" y="3" width="1" height="1" fill="#8D6E63"/><rect x="9" y="3" width="1" height="1" fill="#8D6E63"/><rect x="1" y="4" width="1" height="1" fill="#8D6E63"/><rect x="2" y="4" width="1" height="1" fill="#8D6E63"/><rect x="3" y="4" width="1" height="1" fill="#8D6E63"/><rect x="4" y="4" width="1" height="1" fill="#8D6E63"/><rect x="5" y="4" width="1" height="1" fill="#8D6E63"/><rect x="6" y="4" width="1" height="1" fill="#8D6E63"/><rect x="7" y="4" width="1" height="1" fill="#8D6E63"/><rect x="8" y="4" width="1" height="1" fill="#8D6E63"/><rect x="2" y="5" width="1" height="1" fill="#8D6E63"/><rect x="3" y="5" width="1" height="1" fill="#8D6E63"/><rect x="4" y="5" width="1" height="1" fill="#8D6E63"/><rect x="5" y="5" width="1" height="1" fill="#8D6E63"/><rect x="6" y="5" width="1" height="1" fill="#8D6E63"/><rect x="7" y="5" width="1" height="1" fill="#8D6E63"/><rect x="3" y="6" width="1" height="1" fill="#8D6E63"/><rect x="4" y="6" width="1" height="1" fill="#8D6E63"/><rect x="5" y="6" width="1" height="1" fill="#8D6E63"/><rect x="6" y="6" width="1" height="1" fill="#8D6E63"/></svg></div>
+</div>
 
 <!-- ============ 导航 ============ -->
 <nav class="nav">
@@ -873,7 +1075,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- 状态 -->
     <div class="card col-4 status-card reveal">
-      <div class="card-label">
+      <div class="card-label title-glow">
         <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         系统状态
       </div>
@@ -905,7 +1107,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- ① 在线产品 -->
     <div class="card col-12 reveal" id="products">
-      <div class="card-label">
+      <div class="card-label title-gradient">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         在线产品
       </div>
@@ -951,7 +1153,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- ② AI 开发能力 -->
     <div class="card col-8 reveal" id="ai-dev">
-      <div class="card-label">
+      <div class="card-label title-shimmer">
         <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
         AI 开发能力
       </div>
@@ -980,7 +1182,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- ③ RPA & 自动化 -->
     <div class="card col-4 reveal" id="automation">
-      <div class="card-label">
+      <div class="card-label title-underline">
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
         RPA & 自动化
       </div>
@@ -1000,7 +1202,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- ④ 知识库 & 飞书生态 -->
     <div class="card col-6 reveal" id="knowledge">
-      <div class="card-label">
+      <div class="card-label title-rainbow">
         <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         知识库 & 飞书生态
       </div>
@@ -1021,7 +1223,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- ⑤ 基础设施 & DevOps -->
     <div class="card col-6 reveal" id="infrastructure">
-      <div class="card-label">
+      <div class="card-label title-neon">
         <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         基础设施 & DevOps
       </div>
@@ -1043,7 +1245,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- ⑥ 工作经验入口 -->
     <a class="card col-12 reveal" href="experience.html" id="experience" style="text-decoration: none; color: inherit;">
-      <div class="card-label">
+      <div class="card-label title-typewriter">
         <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
         工作经历
       </div>
@@ -1055,7 +1257,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- 技术栈总览 -->
     <div class="card col-8 reveal" id="skills">
-      <div class="card-label">
+      <div class="card-label title-wave">
         <svg class="icon" viewBox="0 0 24 24"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
         技术栈总览
       </div>
@@ -1114,7 +1316,7 @@ a.terminal-line { text-decoration: none; color: inherit; }
 
     <!-- 联系方式 -->
     <div class="card col-4 contact-card reveal" id="contact">
-      <div class="card-label">
+      <div class="card-label title-blink">
         <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         联系我
       </div>
